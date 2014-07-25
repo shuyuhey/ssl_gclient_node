@@ -20,14 +20,8 @@ server.on('connection', function(socket) {
 });
 
 
-var count = 0;
-var temp_signal = function () {
-    var data =  {
-        type: "text",
-        text: "tempdata" + count
-    };
+var temp_signal = function (data) {
     data = JSON.stringify(data);
-    count++;
     server.clients.forEach(function(client) {
         client.send(data);
     });
@@ -52,7 +46,21 @@ client.on('listening', function () {
 client.on('message', function (message, remote) {
     var packet = SSL_WrapperPacket.decode (message);
     console.log('A: Epic Command Received. Preparing Relay.');
-    console.log('B: From: ' + remote.address + ':' + remote.port +' - ' + packet.detection.frame_number);
+    console.log('B: From: ' + remote.address + ':' + remote.port +' - ' + packet.detection.robots_blue.length);
+    temp_signal (packet);
 });
+
+var express = require('express');
+var app = express();
+
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', function (req, res) {
+    res.render('index', { title: 'Express Sample' });
+});
+
+app.listen(8080);
 
 client.bind(PORT, HOST);
