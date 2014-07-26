@@ -1,11 +1,38 @@
 <html>
   <head>
-    <title>ノードのてすとだよ</title>
+    <title>SSL gClient</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/gclient.css" rel="stylesheet">
   </head>
   <body>
-    <div id="test_field">
+    <div class="container">
+      <div class="row">
+	<div class="col-md-4 col-md-offset-4 text-center">
+	  <span class="label label-default state-name">test</span>
+	  <span class="label label-default state-name">test</span>
+	</div>
+      </div>
+      <div class="row">
+	<div class="col-md-4 col-md-offset-4 text-center">
+	  <span class="label label-default team-name">test</span>
+	  <span >0</span>
+	  <span >-</span>
+	  <span >0</span>
+	  <span class="label label-default team-name">test</span>
+	</div>
+      </div>
+      <div class="row">
+	<!-- <canvas id="field" width="600" height="400"></canvas> -->
+	<canvas class="col-md-10 col-md-offset-1" id="field" width="1125" height="750"></canvas>
+      </div>
     </div>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="/js/field.js"></script>
+    <script src="/js/object_size.js"></script>
+    <script src="/js/obj_draw.js"></script>
     <script src="/js/client.js"></script>
+
+
   </body>
 </html>

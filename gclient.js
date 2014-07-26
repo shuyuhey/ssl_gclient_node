@@ -1,66 +1,75 @@
-var ws = require('websocket.io');
-var server = ws.listen(8888, function () {
-  console.log('\033[96m Server running at 0.0.0.0:8888 \033[39m');
+var ws = require ('websocket.io');
+var server = ws.listen (8888, function () {
+  console.log ('Server running at 0.0.0.0:8888');
 });
 
-server.on('connection', function(socket) {
-    socket.on('message', function(data) {
-        // 実行時間を追加
-        var data = JSON.parse(data);
-        var d = new Date();
-        data.time = d.getFullYear()  + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-        data = JSON.stringify(data);
-        console.log('\033[96m' + data + '\033[39m');
-
-        // 受信したメッセージを全てのクライアントに送信する
-        server.clients.forEach(function(client) {
-            client.send(data);
-        });
+server.on ('connection', function (socket) {
+    socket.on ('message', function (data) {
+        temp_signal (data);
     });
 });
 
-
 var temp_signal = function (data) {
-    data = JSON.stringify(data);
-    server.clients.forEach(function(client) {
-        client.send(data);
+    data = JSON.stringify (data);
+    server.clients.forEach (function (client) {
+        if (client != null) {
+            client.send (data);
+        }
     });
 };
 
-var PORT = 10020;
+var VISION_PORT = 10020;
 var HOST = '0.0.0.0';
-var dgram = require('dgram');
-var client = dgram.createSocket('udp4');
+var dgram = require ('dgram');
 
 var proto = require ('protobufjs');
-var builder = proto.loadProtoFile("proto/messages_robocup_ssl_wrapper.proto"),     SSL_WrapperPacket = builder.build ("SSL_WrapperPacket");
+var builder = proto.loadProtoFile ("proto/messages_robocup_ssl_wrapper.proto"),     SSL_WrapperPacket = builder.build ("SSL_WrapperPacket");
 
-client.on('listening', function () {
-    var address = client.address();
-    console.log('UDP Client listening on ' + address.address + ":" + address.port);
-    client.setBroadcast(true);
-    client.setMulticastTTL(128);
-    client.addMembership('224.5.23.2', HOST);
+var vision_client = dgram.createSocket ('udp4');
+vision_client.on ('listening', function () {
+    var address = vision_client.address ();
+    console.log ('UDP Vision_Client listening on ' + address.address + ":" + address.port);
+    vision_client.setBroadcast (true);
+    vision_client.setMulticastTTL (128);
+    vision_client.addMembership ('224.5.23.2', HOST);
 });
 
-client.on('message', function (message, remote) {
+vision_client.on('message', function (message, remote) {
     var packet = SSL_WrapperPacket.decode (message);
-    console.log('A: Epic Command Received. Preparing Relay.');
-    console.log('B: From: ' + remote.address + ':' + remote.port +' - ' + packet.detection.robots_blue.length);
+    packet.type = "vision";
     temp_signal (packet);
 });
+vision_client.bind (VISION_PORT, HOST);
 
-var express = require('express');
-var app = express();
-
-app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
-app.use(express.static(__dirname + '/public'));
-
-app.get('/', function (req, res) {
-    res.render('index', { title: 'Express Sample' });
+var REFEREE_PORT = 10003;
+var referee_client = dgram.createSocket ('udp4');
+referee_client.on ('listening', function () {
+    var address = referee_client.address ();
+    console.log ('UDP Referee_Client listening on ' + address.address + ":" + address.port);
+    referee_client.setBroadcast (true);
+    referee_client.setMulticastTTL (128);
+    referee_client.addMembership ('224.5.23.1', HOST);
 });
 
-app.listen(8080);
+referee_client.on('message', function (message, remote) {
+    var packet = SSL_Referee.decode (message);
+    packet.type = "referee";
+    temp_signal (packet);
+});
+referee_client.bind (REFEREE_PORT, HOST);
 
-client.bind(PORT, HOST);
+builder = proto.loadProtoFile ("proto/referee.proto");
+var SSL_Referee = builder.build ("SSL_Referee");
+
+var express = require ('express');
+var app = express();
+
+app.set ('view engine', 'ejs');
+app.set ('views', __dirname + '/views');
+app.use (express.static(__dirname + '/public'));
+
+app.get ('/', function (req, res) {
+    res.render ('index', { title: 'Express Sample' });
+});
+
+app.listen (8080);
