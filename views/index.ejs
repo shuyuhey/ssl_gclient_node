@@ -7,18 +7,24 @@
   <body>
     <div class="container">
       <div class="row">
-	<div class="col-md-4 col-md-offset-4 text-center">
-	  <span class="label label-default state-name">test</span>
-	  <span class="label label-default state-name">test</span>
+	<div class="col-md-10 col-md-offset-1 text-center">
+	  <span id="stage" class="label label-default state-name">test</span>
+	  <span id="command" class="label label-default state-name">test</span>
 	</div>
       </div>
       <div class="row">
-	<div class="col-md-4 col-md-offset-4 text-center">
-	  <span class="label label-default team-name">test</span>
-	  <span >0</span>
-	  <span >-</span>
-	  <span >0</span>
-	  <span class="label label-default team-name">test</span>
+	<div class="col-md-10 col-md-offset-1 text-center">
+	  <div class="col-md-4">
+	    <span id="blue" class="label label-blue team-name"></span>
+	  </div>
+	  <div class="col-md-4">
+	    <span id="blue_score" class="label label-blue score-name"></span>
+	    <span id="center_bar" class="label label-default score-name">-</span>
+	    <span id="yellow_score" class="label label-yellow score-name"></span>
+	  </div>
+	  <div class="col-md-4">
+	    <span id="yellow" class="label label-yellow team-name">test</span>
+	  </div>
 	</div>
       </div>
       <div class="row">
@@ -31,8 +37,7 @@
     <script src="/js/field.js"></script>
     <script src="/js/object_size.js"></script>
     <script src="/js/obj_draw.js"></script>
+    <script src="/js/referee.js"></script>
     <script src="/js/client.js"></script>
-
-
   </body>
 </html>

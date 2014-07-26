@@ -7,7 +7,7 @@ ws.onmessage = function (event) {
         draw (data);
     }
     else if (data.type === "referee") {
-        console.log (data);
+        referee (data);
     }
 };
 

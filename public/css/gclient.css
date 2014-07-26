@@ -7,3 +7,17 @@
     font-size: 150%;
     line-height: 220%;
 }
+
+.score-name {
+    font-size: 220%;
+    line-height: 220%;
+}
+
+.label-blue {
+    background-color: #0000FF;
+}
+
+.label-yellow {
+    background-color: #FFFF00;
+    color: #000000;
+}
