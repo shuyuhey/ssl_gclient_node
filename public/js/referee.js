@@ -44,10 +44,6 @@ function referee (packet) {
     blue_name.text (packet.blue.name);
     yellow_name.text (packet.yellow.name);
 
-    // var max = Math.max (blue_name.width (), yellow_name.width ());
-    // blue_name.width (max);
-    // yellow_name.width (max);
-
     $ ("#blue_score").text (packet.blue.score);
     $ ("#yellow_score").text (packet.yellow.score);
 }
