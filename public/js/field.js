@@ -14,7 +14,7 @@ var field_2012 = {
     penalty_spot_from_field_line_dist :  750,
     penalty_line_from_spot_dist       :  400,
     // Not official parameters
-    field_arround_margin              :  675
+    field_arround_margin              :  300
 };
 
 var field = field_2012;
