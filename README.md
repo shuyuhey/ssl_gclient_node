@@ -8,7 +8,7 @@ It enables you to capture and view SSL-Vision and RefereeBox packets.
 This product uses node.js and a web browser as a viewer.
 
 
-![demo](https://github.com/BLThunder1991/ssl_gclient_node/blob/master/browser.png, "demo")
+![demo](https://github.com/BLThunder1991/ssl_gclient_node/blob/master/browser.png?raw=true, "demo")
 
 # INSTALL
 
