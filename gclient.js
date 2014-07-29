@@ -18,7 +18,7 @@ var temp_signal = function (data) {
     });
 };
 
-var VISION_PORT = 10002;
+var VISION_PORT = 1000;
 var HOST = '0.0.0.0';
 var dgram = require ('dgram');
 
@@ -73,3 +73,4 @@ app.get ('/', function (req, res) {
 });
 
 app.listen (8080);
+console.log ('Webserver listening on 0.0.0.0:8080');

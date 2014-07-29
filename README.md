@@ -31,4 +31,4 @@ First, boot up servers.
 % node gclient.js
 ```
 
-Second, access the servers from a web browser. If you access it via the same machine which booted the servers, access http://localhost:8888/ .
+Second, access the servers from a web browser. If you access it via the same machine which booted the servers, access http://localhost:8080/ .
