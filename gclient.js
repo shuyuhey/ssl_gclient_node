@@ -1,4 +1,9 @@
 var ws = require ('websocket.io');
+
+process.on('uncaughtException', function(err) {
+    console.log(err);
+});
+
 var server = ws.listen (8888, function () {
   console.log ('Server running at 0.0.0.0:8888');
 });
@@ -6,6 +11,14 @@ var server = ws.listen (8888, function () {
 server.on ('connection', function (socket) {
     socket.on ('message', function (data) {
         temp_signal (data);
+    });
+
+    socket.on('close', function(){
+        console.log("disconnect");
+    });
+
+    socket.on('error', function(){
+        console.log("error");
     });
 });
 
@@ -18,13 +31,12 @@ var temp_signal = function (data) {
     });
 };
 
-var VISION_PORT = 1000;
+var VISION_PORT = 10002;
 var HOST = '0.0.0.0';
 var dgram = require ('dgram');
 
 var proto = require ('protobufjs');
 var builder = proto.loadProtoFile ("proto/messages_robocup_ssl_wrapper.proto"),     SSL_WrapperPacket = builder.build ("SSL_WrapperPacket");
-
 var vision_client = dgram.createSocket ('udp4');
 vision_client.on ('listening', function () {
     var address = vision_client.address ();
@@ -69,8 +81,8 @@ app.set ('views', __dirname + '/views');
 app.use (express.static(__dirname + '/public'));
 
 app.get ('/', function (req, res) {
-    res.render ('index', { title: 'Express Sample' });
+    res.render ('index');
 });
 
 app.listen (8080);
-console.log ('Webserver listening on 0.0.0.0:8080');
+console.log ('Webserver listening on 0.0.0.0: 8080');
