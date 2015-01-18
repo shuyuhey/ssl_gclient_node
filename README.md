@@ -12,7 +12,7 @@ This product uses node.js and a web browser as a viewer.
 
 # INSTALL
 
-First, you need install node.js (`v0.10.28`) and npm (`1.4.13`).
+First, you need install node.js, npm and bower.
 
 Second, this repository clones and installs enviroment.
 
@@ -20,6 +20,7 @@ Second, this repository clones and installs enviroment.
 % git clone https://github.com/BLThunder1991/ssl_gclient_node.git
 % cd ssl_gclient_node
 % npm install
+% bower install
 ```
 
 # USE

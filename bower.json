@@ -1,0 +1,25 @@
+{
+  "name": "ssl_gclient_node",
+  "version": "0.0.1",
+  "homepage": "https://github.com/BLThunder1991/ssl_gclient_node",
+  "authors": [
+    "Shuhei TAKASUGI <bd.c211@gmail.com>"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.3",
+    "bootstrap": "~3.3.1"
+  }
+}
