@@ -19,7 +19,7 @@ Second, this repository clones and installs enviroment.
 ```shell
 % git clone https://github.com/BLThunder1991/ssl_gclient_node.git
 % cd ssl_gclient_node
-% npm install express ws websocket.io protobufjs
+% npm install
 ```
 
 # USE
@@ -28,7 +28,7 @@ First, boot up servers.
 
 ```shell
 % cd ssl_gclient_node
-% node gclient.js
+% ./bin/www
 ```
 
-Second, access the servers from a web browser. If you access it via the same machine which booted the servers, access http://localhost:8080/ .
+Second, access the servers from a web browser. If you access it via the same machine which booted the servers, access http://localhost:3000/ .

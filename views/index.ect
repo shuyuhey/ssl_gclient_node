@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <title>SSL gClient</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/gclient.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1 text-center">
+          <span id="stage" class="label label-default state-name"></span>
+          <span id="command" class="label label-default state-name"></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1 text-center">
+          <div class="col-md-4">
+            <span id="blue" class="label label-blue team-name"></span>
+          </div>
+          <div class="col-md-4">
+            <span id="blue_score" class="label label-blue score-name"></span>
+            <span id="center_bar" class="label label-default score-name">-</span>
+            <span id="yellow_score" class="label label-yellow score-name"></span>
+          </div>
+          <div class="col-md-4">
+            <span id="yellow" class="label label-yellow team-name"></span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- <canvas id="field" width="600" height="400"></canvas> -->
+        <canvas class="col-md-10 col-md-offset-1" id="field" width="1125" height="750"></canvas>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/field.js"></script>
+    <script src="/js/object_size.js"></script>
+    <script src="/js/obj_draw.js"></script>
+    <script src="/js/referee.js"></script>
+    <script src="/js/client.js"></script>
+  </body>
+</html>

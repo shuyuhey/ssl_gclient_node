@@ -1,27 +1,21 @@
-var ws = new WebSocket ('ws://localhost:8888/');
+var socket = io();
 
-ws.onopen = function (event) {
-    console.log (event);
-};
+socket.on('vision', function (data) {
+  draw (JSON.parse(data));
+});
 
-ws.onmessage = function (event) {
-    var data = JSON.parse(event.data);
-    if (data.type === "vision") {
-        draw (data);
-    }
-    else if (data.type === "referee") {
-        referee (data);
-    }
-};
+socket.on('referee', function (data) {
+  referee(JSON.parse(data));
+});
 
-ws.onclose = function (event) {
-    console.log (event);
-};
+socket.on('message', function (data) {
+  console.log(data);
+});
 
 var canvas = document.getElementById('field');
 var ctx = null;
 if (canvas.getContext){
-    ctx = canvas.getContext('2d');
+  ctx = canvas.getContext('2d');
 }
 
 canvas.height = $ ("#field").height ();
