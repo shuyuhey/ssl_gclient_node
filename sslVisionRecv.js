@@ -3,7 +3,7 @@ var dgram = require ('dgram');
 var proto = require ('protobufjs');
 
 var sslVisionConfig = function() {
-  var VISION_PORT = 10002,
+  var VISION_PORT = 10006,
       HOST = '0.0.0.0';
 
   var builder = proto.loadProtoFile ("proto/messages_robocup_ssl_wrapper.proto"),
