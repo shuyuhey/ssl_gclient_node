@@ -1,6 +1,7 @@
+import Field from './field';
+import {canvas, ctx} from './client';
+
 var ball_color  = 'rgb(255, 118, 0)';
-var field_color = 'rgb(0, 171, 10)';
-var line_color  = 'rgb(255, 255, 255)';
 var blue_color  = 'rgb(0, 0, 255)';
 var yellow_color  = 'rgb(255, 255, 0)';
 var initialized = false;
@@ -9,6 +10,7 @@ var half_width  = 0;
 var half_height = 0;
 var w_scale     = 0;
 var h_scale     = 0;
+var field_obj;
 
 function draw (packet) {
     if (!initialized) {
@@ -16,19 +18,20 @@ function draw (packet) {
         half_height  = field.total_field_width  / 2;
         w_scale = canvas.width / field.total_field_length;
         h_scale = canvas.height / field.total_field_width;
-        initialized = true;
+      initialized = true;
+      field_obj = new Field(ctx, canvas.width, canvas.height);
     }
-
-    ctx.fillStyle = field_color;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    draw_line ();
-    draw_ball (packet.detection.balls);
-    for (var i = 0; i < packet.detection.robots_blue.length; i++) {
-        draw_robot (packet.detection.robots_blue[i], blue_color);
-    }
-    for (    i = 0; i < packet.detection.robots_yellow.length; i++) {
-        draw_robot (packet.detection.robots_yellow[i], yellow_color);
-    }
+  field_obj.render();
+    // ctx.fillStyle = field_color;
+    // ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // draw_line ();
+    // draw_ball (packet.detection.balls);
+    // for (var i = 0; i < packet.detection.robots_blue.length; i++) {
+    //     draw_robot (packet.detection.robots_blue[i], blue_color);
+    // }
+    // for (    i = 0; i < packet.detection.robots_yellow.length; i++) {
+    //     draw_robot (packet.detection.robots_yellow[i], yellow_color);
+    // }
 }
 
 function draw_line () {
@@ -129,3 +132,5 @@ function translate_x (x) {
 function translate_y (y) {
     return Math.round (y * - h_scale + h_scale * half_height);
 }
+
+export {draw}
