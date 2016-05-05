@@ -1,3 +1,5 @@
+import {draw} from './obj_draw';
+
 var socket = io();
 
 socket.on('vision', function (data) {
@@ -12,11 +14,13 @@ socket.on('message', function (data) {
   console.log(data);
 });
 
-var canvas = document.getElementById('field');
-var ctx = null;
+export var canvas = document.getElementById('field');
+export var ctx = null;
 if (canvas.getContext){
   ctx = canvas.getContext('2d');
 }
 
 canvas.height = $ ("#field").height ();
 canvas.width  = $ ("#field").width ();
+
+// export canvas;
