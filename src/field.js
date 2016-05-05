@@ -1,6 +1,9 @@
 import DrawComponent from './draw-component';
 import FillRectangle from './fill-rectangle';
 import StrokeRectangle from './stroke-rectangle';
+import Line from './line';
+import Circle from './circle';
+import Arc from './arc';
 
 export default class Field extends DrawComponent {
   constructor(context, canvasWidth, canvasHeight) {
@@ -23,7 +26,25 @@ export default class Field extends DrawComponent {
       // Not official parameters
       field_arround_margin              :  300
     };
-    this.field = field_2012;
+    var field_2014 = {
+      line_width                        :   10,
+      field_length                      : 9000,
+      field_width                       : 6000,
+      boundary_width                    :  250,
+      referee_width                     :  700,
+      goal_width                        :  1000,
+      goal_depth                        :  180,
+      goal_wall_width                   :   20,
+      center_circle_radius              :  500,
+      defense_radius                    :  1000,
+      defense_stretch                   :  500,
+      free_kick_from_defense_dist       :  200,
+      penalty_spot_from_field_line_dist :  750,
+      penalty_line_from_spot_dist       :  400,
+      // Not official parameters
+      field_arround_margin              :  300
+    };
+    this.field = field_2014;
     this.field.total_field_length = this.field.field_length + this.field.field_arround_margin * 2;
     this.field.total_field_width  = this.field.field_width  + this.field.field_arround_margin * 2;
     this.fieldColor = 'rgb(0, 171, 10)';
@@ -41,78 +62,73 @@ export default class Field extends DrawComponent {
                                   0, 0, this.canvasWidth, this.canvasHeight,
                                   this.fieldColor));
     this.lines.push(new StrokeRectangle(this.ctx,
-                                  this.scaleW(this.field.field_arround_margin),
-                                  this.scaleH(this.field.field_arround_margin),
-                                  this.scaleW(this.field.field_length),
-                                  this.scaleH(this.field.field_width),
-                                  this.lineColor, this.field.line_width));
+                                        this.scaleW(this.field.field_arround_margin),
+                                        this.scaleH(this.field.field_arround_margin),
+                                        this.scaleW(this.field.field_length),
+                                        this.scaleH(this.field.field_width),
+                                        this.lineColor, this.field.line_width));
+    this.lines.push(new Line(this.ctx,
+                             this.translateX(0),
+                             this.translateY( - this.field.field_width / 2),
+                             this.translateX(0),
+                             this.translateY(   this.field.field_width / 2),
+                             this.lineColor));
+    this.lines.push(new Line(this.ctx,
+                             this.translateX( - this.field.field_length / 2),
+                             this.translateY(0),
+                             this.translateX(   this.field.field_length / 2),
+                             this.translateY(0),
+                             this.lineColor));
+    this.lines.push(new Circle(this.ctx,
+                               this.translateX (0), this.translateY (0),
+                               this.scaleW(this.field.center_circle_radius),
+                               this.lineColor));
+    this.lines.push(new Line(this.ctx,
+                             this.translateX( - this.field.field_length / 2 + this.field.defense_radius),
+                             this.translateY(this.field.defense_stretch / 2),
+                             this.translateX( - this.field.field_length / 2 + this.field.defense_radius),
+                             this.translateY( - this.field.defense_stretch / 2),
+                             this.lineColor));
+    this.lines.push(new Arc(this.ctx,
+                            this.translateX( - this.field.field_length / 2),
+                            this.translateY(this.field.defense_stretch / 2),
+                            this.scaleW(this.field.defense_radius),
+                            0, - Math.PI / 2, this.lineColor));
+    this.lines.push(new Arc(this.ctx,
+                            this.translateX( - this.field.field_length / 2),
+                            this.translateY( - this.field.defense_stretch / 2),
+                            this.scaleW(this.field.defense_radius),
+                            Math.PI / 2, 0, this.lineColor));
+    this.lines.push(new Line(this.ctx,
+                             this.translateX(this.field.field_length / 2 - this.field.defense_radius),
+                             this.translateY(- this.field.defense_stretch / 2),
+                             this.translateX(this.field.field_length / 2 - this.field.defense_radius),
+                             this.translateY(this.field.defense_stretch / 2),
+                             this.lineColor));
+    this.lines.push(new Arc(this.ctx,
+                            this.translateX(this.field.field_length / 2),
+                            this.translateY(- this.field.defense_stretch / 2),
+                            this.scaleW(this.field.defense_radius),
+                            - Math.PI, Math.PI / 2, this.lineColor));
+    this.lines.push(new Arc(this.ctx,
+                            this.translateX(this.field.field_length / 2),
+                            this.translateY(this.field.defense_stretch / 2),
+                            this.scaleW(this.field.defense_radius),
+                            - Math.PI / 2, - Math.PI, this.lineColor));
   }
-
-  scaleW(val) { return this.w_scale * val; }
-  scaleH(val) { return this.h_scale * val; }
 
   render() {
     this.lines.map(l => l.render());
   }
 
-  renderLine() {
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = line_color;
-    this.ctx.strokeRect(( w_scale * field.field_arround_margin),
-                   ( h_scale * field.field_arround_margin),
-                   ( w_scale * field.field_length),
-                   ( h_scale * field.field_width));
-    // Center line
-    this.ctx.beginPath ();
-    this.ctx.lineTo (translate_x (0), translate_y ( - field.field_width / 2));
-    this.ctx.lineTo (translate_x (0), translate_y (   field.field_width / 2));
-    this.ctx.closePath ();
-    this.ctx.stroke ();
-
-    this.ctx.beginPath ();
-    this.ctx.lineTo (translate_x ( - field.field_length / 2), translate_y (0));
-    this.ctx.lineTo (translate_x ( - field.center_circle_radius), translate_y (0));
-    this.ctx.closePath ();
-    this.ctx.stroke ();
-    this.ctx.beginPath ();
-    this.ctx.lineTo (translate_x (field.center_circle_radius), translate_y (0));
-    this.ctx.lineTo (translate_x (field.field_length / 2), translate_y (0));
-    this.ctx.closePath ();
-    this.ctx.stroke ();
-
-    // Center Circle
-    this.ctx.beginPath();
-    this.ctx.arc(translate_x (0), translate_y (0),
-            w_scale * field.center_circle_radius, 0, Math.PI*2, false);
-    this.ctx.stroke();
-
-    // Defense Area
-    this.ctx.beginPath();
-    this.ctx.lineTo (translate_x ( - field.field_length / 2 + field.defense_radius),
-                translate_y (field.defense_stretch / 2));
-    this.ctx.arc(translate_x ( - field.field_length / 2),
-            translate_y (field.defense_stretch / 2),
-            w_scale * field.defense_radius, 0, - Math.PI / 2, true);
-    this.ctx.arc(translate_x ( - field.field_length / 2),
-            translate_y ( - field.defense_stretch / 2),
-            w_scale * field.defense_radius, Math.PI / 2, 0, true);
-    this.ctx.lineTo (translate_x ( - field.field_length / 2 + field.defense_radius),
-                translate_y ( - field.defense_stretch / 2));
-    this.ctx.closePath ();
-    this.ctx.stroke();
-
-    this.ctx.beginPath();
-    this.ctx.lineTo (translate_x (field.field_length / 2 -  field.defense_radius),
-                translate_y (field.defense_stretch / 2));
-    this.ctx.arc(translate_x (field.field_length / 2),
-            translate_y (field.defense_stretch / 2),
-            w_scale * field.defense_radius, - Math.PI, - Math.PI / 2, false);
-    this.ctx.arc(translate_x (field.field_length / 2),
-            translate_y ( - field.defense_stretch / 2),
-            w_scale * field.defense_radius, Math.PI / 2, Math.PI, false);
-    this.ctx.lineTo (translate_x (field.field_length / 2 -  field.defense_radius),
-                translate_y ( - field.defense_stretch / 2));
-    this.ctx.closePath ();
-    this.ctx.stroke();
+  scaleW(val) { return this.w_scale * val; }
+  scaleH(val) { return this.h_scale * val; }
+  translateX(x) {
+    return Math.round(this.scaleW(x) +
+                      this.scaleW(this.field.total_field_length / 2));
+  }
+  translateY(y) {
+    return Math.round(this.scaleH(-1 * y) +
+                      this.scaleH(this.field.total_field_width / 2));
   }
 }

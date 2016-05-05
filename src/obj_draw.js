@@ -14,10 +14,10 @@ var field_obj;
 
 function draw (packet) {
     if (!initialized) {
-        half_width   = field.total_field_length / 2;
-        half_height  = field.total_field_width  / 2;
-        w_scale = canvas.width / field.total_field_length;
-        h_scale = canvas.height / field.total_field_width;
+      // half_width   = field.total_field_length / 2;
+      // half_height  = field.total_field_width  / 2;
+      // w_scale = canvas.width / field.total_field_length;
+      // h_scale = canvas.height / field.total_field_width;
       initialized = true;
       field_obj = new Field(ctx, canvas.width, canvas.height);
     }
