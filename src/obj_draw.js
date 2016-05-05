@@ -1,18 +1,13 @@
 import Field from './field';
 import Ball from './ball';
+import Robot from './robot';
 import {canvas, ctx} from './client';
 
-var ball_color  = 'rgb(255, 118, 0)';
-var blue_color  = 'rgb(0, 0, 255)';
-var yellow_color  = 'rgb(255, 255, 0)';
 var initialized = false;
 
-var half_width  = 0;
-var half_height = 0;
-var w_scale     = 0;
-var h_scale     = 0;
 var field_obj;
 var ball_obj = undefined;
+var robot_objs = {};
 
 function draw (packet) {
     if (!initialized) {
@@ -26,31 +21,21 @@ function draw (packet) {
   ball_obj = ball_obj || new Ball(ctx, ball.x, ball.y);
   ball_obj.update(ball.x, ball.y);
   ball_obj.render();
-}
 
-function draw_robot (robot, color) {
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgb(0, 0, 0)';
-    ctx.fillStyle = color;
-    ctx.arc(translate_x (robot.x),
-            translate_y (robot.y),
-            w_scale * object_size.robot_radius, - robot.orientation - (50 * Math.PI / 180), - robot.orientation - ( -  50 * Math.PI / 180), true);
-    ctx.stroke ();
-    ctx.fill ();
-    ctx.fillStyle = 'rgb(0, 0, 0)';
-    ctx.font = "12px 'sans-serif'";
-    ctx.fillText (robot.robot_id,
-                  translate_x (robot.x - object_size.robot_radius / 2),
-                  translate_y (robot.y - object_size.robot_radius / 2),
-                  w_scale * object_size.robot_radius);
-}
+  var robots = packet.detection.robots_blue;
+  var robotrender = function (robots, color) {
+    if (robots.length > 0) {
+      for (var i in robots) {
+        robot_objs[robots[i].robot_id+color] = robot_objs[robots[i].robot_id+color] || new Robot(ctx, robots[i].robot_id, robots[i].x, robots[i].y, robots[i].orientation, color);
+        robot_objs[robots[i].robot_id+color].update(robots[i].x, robots[i].y, robots[i].orientation);
+        robot_objs[robots[i].robot_id+color].render();
+      }
+    }
+  };
 
-function translate_x (x) {
-    return Math.round (x * w_scale + w_scale * half_width);
-}
-
-function translate_y (y) {
-    return Math.round (y * - h_scale + h_scale * half_height);
+  robotrender(robots, 'blue');
+  robots = packet.detection.robots_yellow;
+  robotrender(robots, 'yellow');
 }
 
 export {draw}
