@@ -13,6 +13,7 @@ export default class StrokeRectangle extends DrawComponent {
 
   render() {
     this.ctx.beginPath();
+    this.ctx.lineWidth = this.width;
     this.ctx.strokeStyle = this.lineColor;
     this.ctx.fillStyle = this.transparent;
     this.ctx.strokeRect(this.x, this.y, this.w, this.h);

@@ -56,79 +56,70 @@ export default class Field extends DrawComponent {
     this.w_scale = this.canvasWidth / this.field.total_length;
     this.h_scale = this.canvasHeight /this. field.total_width;
 
-    this.lines = [];
+    this.offsetX = this.field.total_length / 2;
+    this.offsetY = this.field.total_width / 2;
+    this.ctx.setTransform(this.w_scale, 0, 0, this.h_scale, this.w_scale * this.offsetX, this.h_scale * this.offsetY);
 
+    this.lines = [];
     this.lines.push(new FillRectangle(this.ctx,
-                                      0, 0, this.canvasWidth, this.canvasHeight,
+                                      -this.field.total_length / 2,
+                                      -this.field.total_width / 2,
+                                      this.field.total_length,
+                                      this.field.total_width,
                                       this.fieldColor));
     this.lines.push(new StrokeRectangle(this.ctx,
-                                        this.scaleW(this.field.arround_margin),
-                                        this.scaleH(this.field.arround_margin),
-                                        this.scaleW(this.field.length),
-                                        this.scaleH(this.field.width),
+                                        this.field.arround_margin - this.field.total_length / 2,
+                                        this.field.arround_margin - this.field.total_width / 2,
+                                        this.field.length,
+                                        this.field.width,
                                         this.lineColor, this.field.line_width));
     this.lines.push(new Line(this.ctx,
-                             this.translateX(0),
-                             this.translateY( - this.field.width / 2),
-                             this.translateX(0),
-                             this.translateY(   this.field.width / 2),
+                             0, -this.field.width / 2,
+                             0,  this.field.width / 2,
                              this.lineColor));
     this.lines.push(new Line(this.ctx,
-                             this.translateX( - this.field.length / 2),
-                             this.translateY(0),
-                             this.translateX(   this.field.length / 2),
-                             this.translateY(0),
+                             -this.field.length / 2, 0,
+                             this.field.length / 2,  0,
                              this.lineColor));
     this.lines.push(new Circle(this.ctx,
-                               this.translateX (0), this.translateY (0),
-                               this.scaleW(this.field.center_circle_radius),
+                               0, 0,
+                               this.field.center_circle_radius,
                                this.lineColor));
     this.lines.push(new Line(this.ctx,
-                             this.translateX( - this.field.length / 2 + this.field.defense_radius),
-                             this.translateY(this.field.defense_stretch / 2),
-                             this.translateX( - this.field.length / 2 + this.field.defense_radius),
-                             this.translateY( - this.field.defense_stretch / 2),
+                             -this.field.length / 2 + this.field.defense_radius,
+                             this.field.defense_stretch / 2,
+                             -this.field.length / 2 + this.field.defense_radius,
+                             -this.field.defense_stretch / 2,
                              this.lineColor));
     this.lines.push(new Arc(this.ctx,
-                            this.translateX( - this.field.length / 2),
-                            this.translateY(this.field.defense_stretch / 2),
-                            this.scaleW(this.field.defense_radius),
+                            -this.field.length / 2,
+                            -this.field.defense_stretch / 2,
+                            this.field.defense_radius,
                             0, - Math.PI / 2, this.lineColor));
     this.lines.push(new Arc(this.ctx,
-                            this.translateX( - this.field.length / 2),
-                            this.translateY( - this.field.defense_stretch / 2),
-                            this.scaleW(this.field.defense_radius),
+                            -this.field.length / 2,
+                            this.field.defense_stretch / 2,
+                            this.field.defense_radius,
                             Math.PI / 2, 0, this.lineColor));
     this.lines.push(new Line(this.ctx,
-                             this.translateX(this.field.length / 2 - this.field.defense_radius),
-                             this.translateY(- this.field.defense_stretch / 2),
-                             this.translateX(this.field.length / 2 - this.field.defense_radius),
-                             this.translateY(this.field.defense_stretch / 2),
+                             this.field.length / 2 - this.field.defense_radius,
+                             -this.field.defense_stretch / 2,
+                             this.field.length / 2 - this.field.defense_radius,
+                             this.field.defense_stretch / 2,
                              this.lineColor));
     this.lines.push(new Arc(this.ctx,
-                            this.translateX(this.field.length / 2),
-                            this.translateY(- this.field.defense_stretch / 2),
-                            this.scaleW(this.field.defense_radius),
-                            - Math.PI, Math.PI / 2, this.lineColor));
+                            this.field.length / 2,
+                            this.field.defense_stretch / 2,
+                            this.field.defense_radius,
+                            -Math.PI, Math.PI / 2, this.lineColor));
     this.lines.push(new Arc(this.ctx,
-                            this.translateX(this.field.length / 2),
-                            this.translateY(this.field.defense_stretch / 2),
-                            this.scaleW(this.field.defense_radius),
-                            - Math.PI / 2, - Math.PI, this.lineColor));
+                            this.field.length / 2,
+                            -this.field.defense_stretch / 2,
+                            this.field.defense_radius,
+                            -Math.PI / 2, -Math.PI, this.lineColor));
   }
 
   render() {
     this.lines.map(l => l.render());
-  }
-
-  scaleW(val) { return this.w_scale * val; }
-  scaleH(val) { return this.h_scale * val; }
-  translateX(x) {
-    return Math.round(this.scaleW(x) +
-                      this.scaleW(this.field.total_length / 2));
-  }
-  translateY(y) {
-    return Math.round(this.scaleH(-1 * y) +
-                      this.scaleH(this.field.total_width / 2));
   }
 }

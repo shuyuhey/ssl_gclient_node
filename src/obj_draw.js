@@ -14,85 +14,10 @@ var field_obj;
 
 function draw (packet) {
     if (!initialized) {
-      // half_width   = field.total_field_length / 2;
-      // half_height  = field.total_field_width  / 2;
-      // w_scale = canvas.width / field.total_field_length;
-      // h_scale = canvas.height / field.total_field_width;
       initialized = true;
       field_obj = new Field(ctx, canvas.width, canvas.height);
     }
   field_obj.render();
-    // ctx.fillStyle = field_color;
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
-    // draw_line ();
-    // draw_ball (packet.detection.balls);
-    // for (var i = 0; i < packet.detection.robots_blue.length; i++) {
-    //     draw_robot (packet.detection.robots_blue[i], blue_color);
-    // }
-    // for (    i = 0; i < packet.detection.robots_yellow.length; i++) {
-    //     draw_robot (packet.detection.robots_yellow[i], yellow_color);
-    // }
-}
-
-function draw_line () {
-    ctx.beginPath();
-    ctx.strokeStyle = line_color;
-    ctx.strokeRect(( w_scale * field.field_arround_margin),
-                   ( h_scale * field.field_arround_margin),
-                   ( w_scale * field.field_length),
-                   ( h_scale * field.field_width));
-    // Center line
-    ctx.beginPath ();
-    ctx.lineTo (translate_x (0), translate_y ( - field.field_width / 2));
-    ctx.lineTo (translate_x (0), translate_y (   field.field_width / 2));
-    ctx.closePath ();
-    ctx.stroke ();
-
-    ctx.beginPath ();
-    ctx.lineTo (translate_x ( - field.field_length / 2), translate_y (0));
-    ctx.lineTo (translate_x ( - field.center_circle_radius), translate_y (0));
-    ctx.closePath ();
-    ctx.stroke ();
-    ctx.beginPath ();
-    ctx.lineTo (translate_x (field.center_circle_radius), translate_y (0));
-    ctx.lineTo (translate_x (field.field_length / 2), translate_y (0));
-    ctx.closePath ();
-    ctx.stroke ();
-
-    // Center Circle
-    ctx.beginPath();
-    ctx.arc(translate_x (0), translate_y (0),
-            w_scale * field.center_circle_radius, 0, Math.PI*2, false);
-    ctx.stroke();
-
-    // Defense Area
-    ctx.beginPath();
-    ctx.lineTo (translate_x ( - field.field_length / 2 + field.defense_radius),
-            translate_y (field.defense_stretch / 2));
-    ctx.arc(translate_x ( - field.field_length / 2),
-            translate_y (field.defense_stretch / 2),
-            w_scale * field.defense_radius, 0, - Math.PI / 2, true);
-    ctx.arc(translate_x ( - field.field_length / 2),
-            translate_y ( - field.defense_stretch / 2),
-            w_scale * field.defense_radius, Math.PI / 2, 0, true);
-    ctx.lineTo (translate_x ( - field.field_length / 2 + field.defense_radius),
-                translate_y ( - field.defense_stretch / 2));
-    ctx.closePath ();
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.lineTo (translate_x (field.field_length / 2 -  field.defense_radius),
-            translate_y (field.defense_stretch / 2));
-    ctx.arc(translate_x (field.field_length / 2),
-            translate_y (field.defense_stretch / 2),
-            w_scale * field.defense_radius, - Math.PI, - Math.PI / 2, false);
-    ctx.arc(translate_x (field.field_length / 2),
-            translate_y ( - field.defense_stretch / 2),
-            w_scale * field.defense_radius, Math.PI / 2, Math.PI, false);
-    ctx.lineTo (translate_x (field.field_length / 2 -  field.defense_radius),
-                translate_y ( - field.defense_stretch / 2));
-    ctx.closePath ();
-    ctx.stroke();
 }
 
 function draw_ball (balls) {
