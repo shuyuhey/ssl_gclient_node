@@ -1,4 +1,5 @@
 import Field from './field';
+import Ball from './ball';
 import {canvas, ctx} from './client';
 
 var ball_color  = 'rgb(255, 118, 0)';
@@ -11,6 +12,7 @@ var half_height = 0;
 var w_scale     = 0;
 var h_scale     = 0;
 var field_obj;
+var ball_obj = undefined;
 
 function draw (packet) {
     if (!initialized) {
@@ -18,19 +20,12 @@ function draw (packet) {
       field_obj = new Field(ctx, canvas.width, canvas.height);
     }
   field_obj.render();
-}
-
-function draw_ball (balls) {
-    for (var i = 0; i < balls.length; i++ ) {
-        var ball = balls[i];
-        ctx.beginPath ();
-        ctx.fillStyle = ball_color;
-
-        var x = translate_x (ball.x);
-        var y = translate_y (ball.y);
-        ctx.arc (x, y, w_scale * object_size.ball_radius, 0, Math.PI*2.0, true);
-        ctx.fill();
-    }
+  if (packet.detection.balls.length > 0) {
+    var ball = packet.detection.balls[0];
+  }
+  ball_obj = ball_obj || new Ball(ctx, ball.x, ball.y);
+  ball_obj.update(ball.x, ball.y);
+  ball_obj.render();
 }
 
 function draw_robot (robot, color) {
